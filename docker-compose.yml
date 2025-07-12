@@ -1,0 +1,27 @@
+services:
+  chatappwithsignalr:
+    image: ${DOCKER_REGISTRY-}chatappwithsignalr
+    build:
+      context: .
+      dockerfile: ChatAppWithSignalR/Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db-ms-sql;Database=coolandgood;User Id=SA;Password=XQvqeN9UqUjoRcmr;MultipleActiveResultSets=true;TrustServerCertificate=true;
+    depends_on:
+      - db-ms-sql
+  db-ms-sql:
+    container_name: db-ms-sql
+    image: "mcr.microsoft.com/mssql/rhel/server:2025-latest"
+    restart: unless-stopped
+    environment:
+      SA_PASSWORD: "XQvqeN9UqUjoRcmr"
+      ACCEPT_EULA: "Y"
+      TZ: "Europe/Warsaw"
+    ports:
+      - "1433:1433"
+    tmpfs:
+      - "/tmp"
+    volumes:
+      - "db-ms-sql-data:/var/opt/mssql"
+
+volumes:
+  db-ms-sql-data: {}

@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+﻿using SkiaSharp;
 
 namespace ChatAppWithSignalR.Helpers
 {
@@ -8,18 +8,14 @@ namespace ChatAppWithSignalR.Helpers
 
         public static string GetDefaultPhoto()
         {
-            using (Image image = Image.FromFile(ImgPath))
-            {
-                using (MemoryStream m = new MemoryStream())
-                {
-                    image.Save(m, image.RawFormat);
-                    byte[] imageBytes = m.ToArray();
-
-                    // Convert byte[] to Base64 String
-                    string base64String = Convert.ToBase64String(imageBytes);
-                    return base64String;
-                }
-            }
+            using var inputStream = File.OpenRead(ImgPath);
+            using var inputCodec = SKCodec.Create(inputStream);
+            using var bitmap = new SKBitmap(inputCodec.Info);
+            inputCodec.GetPixels(bitmap.Info, bitmap.GetPixels());
+            using var image = SKImage.FromBitmap(bitmap);
+            using var outputStream = new MemoryStream();
+            image.Encode(SKEncodedImageFormat.Png, 100).SaveTo(outputStream);
+            return Convert.ToBase64String(outputStream.ToArray());
         }
     }
 }

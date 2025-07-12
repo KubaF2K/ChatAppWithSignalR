@@ -1,0 +1,21 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  chatappwithsignalr:
+    build:
+      context: "C:\\Users\\Kuba\\RiderProjects\\ChatAppWithSignalR"
+      dockerfile: "ChatAppWithSignalR/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net7.0/ChatAppWithSignalR.dll"
+    environment:
+      ASPNETCORE_STATICWEBASSETS: "/app/bin/Debug/net7.0/ChatAppWithSignalR.staticwebassets.runtime.CT.json"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "chatappwithsignalr:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\Kuba\\RiderProjects\\ChatAppWithSignalR\\ChatAppWithSignalR:/app:rw"
+    - "C:\\Users\\Kuba\\RiderProjects\\ChatAppWithSignalR:/src:rw"
+    - "C:\\Users\\Kuba\\.nuget\\packages:/root/.nuget/packages"
+    working_dir: "/app"
